@@ -1,6 +1,25 @@
 import React, { Component } from 'react';
 import { Query, Mutation } from 'react-apollo';
-import { UPDATE_TODO, GET_TODOS } from './schema';
+import gql from 'graphql-tag';
+
+ const GET_TODOS = gql`
+    query GetTodos {
+        todos {
+            id
+            type
+        }
+    }
+`;
+
+ const UPDATE_TODO = gql`
+    mutation UpdateTodo($id: String!, $type: String!) {
+        updateTodo(id: $id, type: $type) {
+            id
+            type
+        }
+    }
+`;
+
 
 const Todos = () => (
     <Query query={GET_TODOS}>
@@ -11,7 +30,7 @@ const Todos = () => (
 
                 return data.todos.map(({id, type}) => {
                     let input;
-
+                    console.log(data)
                     return (<Mutation mutation={UPDATE_TODO} key={id}>
                         {
                             (updateTodo, {loading, error}) => (<div>
